@@ -2,6 +2,8 @@ local Script = {}
 Script.__index = Script
 
 local ModuleCache = {}
+local unpack = table.unpack or unpack
+
 
 local sha = require('Foxit.Libs.sha2')
 
@@ -12,10 +14,57 @@ local restrictedGlobals = {
 
 local function BuildEnv(script)
     local env = {} 
-    env.script = script
 
-    -- function env.reqire(path)
-    -- end
+    local function findModule(name)
+        local modulePath = name:gsub("%.", "/")
+
+        for template in package.path:gmatch("[^;]+") do
+            local path = template:gsub("%?", modulePath)
+            local file = io.open(path, 'r')
+
+            if file then
+                file:close()
+                return path
+            end
+        end
+    end
+
+
+    function env.require(name)
+       assert(type(name) == 'string',
+            "bad argument #1 to 'require' (string expected, got " ..
+            type(name) .. ")"
+        )
+
+        local loaded = ModuleCache[name]
+        if loaded ~= nil then
+            return loaded
+        end
+
+        local path = findModule(name)
+        if not path then
+            error(
+                "module '" .. name .. "' not found:\n" ..
+                "\tno file '" .. name:gsub("%.", "/") .. ".lua" .. "'"
+            )
+        end
+        
+
+        local file = assert(io.open(path, 'r'))
+        local source = file:read("*a")
+        file:close()
+
+        local chunk, err = loadstring(source, '@' .. path)
+        if not chunk then
+            error(err, 2)
+        end
+
+        setfenv(chunk, env)
+        ModuleCache[name] = chunk()
+
+
+        return ModuleCache[name]
+    end
 
     env.__index = function(self, k)
         if restrictedGlobals[k] then

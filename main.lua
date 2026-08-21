@@ -2,15 +2,20 @@ local Foxit = {
     love = {}, -- Love Callbacks
     Living = 0,
 
+    Collections = {Tags = {}},
+
+    Sounds = {},
     Objects = {},
 }
 
 setmetatable(Foxit.Objects, {__mode = 'k'}) -- Weak 
+setmetatable(Foxit.Sounds, {__mode = 'k'}) -- Weak =)))
 
 _G.Foxit = Foxit
 
 local utils = require('Foxit.Core.Utills'); Foxit.log = utils.BuildLogFuncs('main')
 local Renderer = require('Foxit.Core.Renderer').new()
+local SoundHandler = require('Foxit.Core.Handlers.SoundHandler')
 
 Script = require('Foxit.Classes.Script')
 Signal = require('Foxit.Classes.Signal')
@@ -27,6 +32,7 @@ Foxit.log.info('Setting up Love Callbacks..')
 
 function Foxit.love.update(dt)
     Renderer:Update(dt)
+    SoundHandler:Update(dt)
     task.update(dt)
     Foxit.Living = Foxit.Living + dt
 end
@@ -53,6 +59,7 @@ end
 
 _G.__introFinished = false
 
+
 local IntroScript = Script.new('Foxit/Scripts/intro.lua')
 IntroScript.Name = 'intro'
 
@@ -67,6 +74,7 @@ task.spawn(function()
     MainScript.Name = 'Main'
 
     MainScript:Run()
+
 end)
 
 return Foxit

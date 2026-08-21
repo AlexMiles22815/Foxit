@@ -19,7 +19,9 @@ function Signal:Fire(...)
             if connection.Once then
                 connection:Disconnect()
             end
-            connection.Function(...)
+           task.spawn(function(...)
+                connection.Function(...)
+           end)
         end
     end
 
