@@ -54,6 +54,7 @@ function Foxit.love.update(dt)
     -- // Mouse
     local mx, my = love.mouse.getPosition()
     Foxit.Mouse.Position = Vector2.new(mx, my)
+    Foxit.Mouse.WorldPosition = Foxit.Camera:ScreenToWorld(mx, my)
 
 
 
@@ -80,6 +81,20 @@ end
 function Foxit.love.mousepressed(x, y, button, istouch, presses)
     if button == 1 then
         Foxit.Mouse.LMB:Fire(false)
+
+        local mouse = Foxit.Mouse.WorldPosition
+
+        for i, Object in pairs(Foxit.Objects) do
+            if not Object.Mouse then
+                if Object:IsPointInsideOfImage(
+                    mouse.X,
+                    mouse.Y
+                ) then
+                    Object.OnMouseClicked:Fire()
+                end
+            end
+        end
+
     elseif button == 2 then
         Foxit.Mouse.RMB:Fire(false)
     elseif button == 3 then
