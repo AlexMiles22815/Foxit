@@ -13,6 +13,8 @@ function Mouse.new()
     self.LMB = Signal.new()
     self.RMB = Signal.new()
 
+    self.Color = Color3.new(1, 1, 1)
+
     return self
 end
 

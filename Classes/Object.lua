@@ -1,5 +1,6 @@
 local Object = {}
 Object.__index = Object
+Object.__type = 'Object'
 
 function Object.new()
     local self = {}; setmetatable(self, Object)

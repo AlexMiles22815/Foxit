@@ -1,5 +1,5 @@
 local Object2D = {}
-Object2D.__index = {}
+Object2D.__index = Object2D
 
 local Object = require('Foxit.Classes.Object')
 setmetatable(Object2D, Object)
@@ -11,7 +11,8 @@ function Object2D.new()
     self.Position = Vector2.new(0, 0)
     self.Scale = Vector2.new(1, 1)
     self.Rotation = 0
-
+    self.Color = Color3.new(1, 1, 1)
+    self.Transparency = 0
     self.LoveImage = nil
 
 
@@ -20,6 +21,11 @@ end
 
 function Object2D:LoadImage(path)
     self.LoveImage = love.graphics.newImage(path)
+end
+
+function Object2D:Destroy()
+    self.LoveImage = nil
+    collectgarbage("collect")
 end
 
 return Object2D

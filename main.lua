@@ -6,6 +6,8 @@ local Foxit = {
 
     Sounds = {},
     Objects = {},
+
+    Version = '0.0.1',
 }
 
 setmetatable(Foxit.Objects, {__mode = 'k'}) -- Weak 
@@ -18,10 +20,14 @@ local Renderer = require('Foxit.Core.Renderer').new()
 local SoundHandler = require('Foxit.Core.Handlers.SoundHandler')
 local Mouse = require('Foxit.Classes.Mouse')
 
+require('Foxit.Core.Globals')
+
 Script = require('Foxit.Classes.Script')
 Signal = require('Foxit.Classes.Signal')
 Vector2 = require('Foxit.Classes.Vector2')
+Color3 = require('Foxit.Classes.Color3')
 Camera = require('Foxit.Classes.Camera')
+Object2D = require('Foxit.Classes.Object2D')
 task = require('Foxit.Core.task')
 
 
@@ -45,7 +51,10 @@ function Foxit.love.update(dt)
     local mx, my = love.mouse.getPosition()
     Foxit.Mouse.Position = Vector2.new(mx, my)
 
+
+
     -- // Other
+
     Renderer:Update(dt)
     SoundHandler:Update(dt)
     task.update(dt)
@@ -90,13 +99,13 @@ function Foxit:GetRenderer()
     return Renderer
 end
 
-function tick()
-    return Foxit.Living
-end
+Renderer:SetWindowSize(1280, 720)
+Renderer:SetVirtualSize(1280, 720)
+Renderer:SetPixelPerfect(false)
 
 _G.__introFinished = false
 
-
+Foxit.log.info('Playing Intro..')
 local IntroScript = Script.new('Foxit/Scripts/intro.lua')
 IntroScript.Name = 'intro'
 
@@ -107,6 +116,8 @@ task.spawn(function()
     repeat task.wait(0.001)
     until _G.__introFinished
 
+    Foxit.log.info('Intro Finished')
+    Foxit.log.info('Running Main Script')
     local MainScript = Script.new('Game/main.lua')
     MainScript.Name = 'Main'
 

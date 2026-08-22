@@ -18,4 +18,16 @@ function utils.BuildLogFuncs(name)
     return t
 end
 
+function utils.drawHexagon(mode, x, y, radius)
+    local vertices = {}
+    for i = 1, 6 do
+        local angle = (i - 1) * math.pi / 3
+        table.insert(vertices, x + radius * math.cos(angle))
+        table.insert(vertices, y + radius * math.sin(angle))
+    end
+    love.graphics.polygon(mode, vertices)
+end
+
+
+
 return utils
