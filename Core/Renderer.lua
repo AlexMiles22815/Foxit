@@ -34,11 +34,6 @@ function Renderer.new()
     return self
 end
 
-
--- =========================================
--- Update / Draw
--- =========================================
-
 function Renderer:Update(dt)
     self.dt = dt
 end
@@ -51,11 +46,6 @@ function Renderer:Draw()
 
     self.RenderStepped:Fire(self.dt)
 end
-
-
--- =========================================
--- Window
--- =========================================
 
 function Renderer:GetWindowSize()
     local w, h = love.window.getMode()
@@ -99,11 +89,6 @@ function Renderer:Windowed()
     return love.window.setMode(w, h, f)
 end
 
-
--- =========================================
--- Virtual Resolution
--- =========================================
-
 function Renderer:GetVirtualSize()
     return self.VirtualSize.X, self.VirtualSize.Y
 end
@@ -116,11 +101,6 @@ function Renderer:SetVirtualSize(w, h)
         self:CreateCanvas()
     end
 end
-
-
--- =========================================
--- Pixel Perfect
--- =========================================
 
 function Renderer:SetPixelPerfect(value)
     value = not not value
@@ -195,10 +175,6 @@ function Renderer:GetViewport()
 end
 
 
--- =========================================
--- Pixel Perfect Viewport
--- =========================================
-
 function Renderer:GetPixelViewport()
     local sw, sh = self:GetWindowSize()
     local vw, vh = self:GetVirtualSize()
@@ -211,7 +187,6 @@ function Renderer:GetPixelViewport()
         )
     )
 
-    -- Window smaller than virtual resolution
     if scale < 1 then
         scale = 1
     end
@@ -238,11 +213,6 @@ function Renderer:GetPixelViewport()
     }
 end
 
-
--- =========================================
--- Coordinate Conversion
--- =========================================
-
 function Renderer:ScreenToVirtual(x, y)
 
     local viewport
@@ -259,10 +229,6 @@ function Renderer:ScreenToVirtual(x, y)
     return x, y
 end
 
-
--- =========================================
--- World
--- =========================================
 
 function Renderer:BeginWorld()
 
@@ -298,9 +264,6 @@ function Renderer:EndWorld()
 end
 
 
--- =========================================
--- GUI
--- =========================================
 
 function Renderer:BeginGUI()
 
@@ -328,10 +291,6 @@ function Renderer:EndGUI()
 end
 
 
--- =========================================
--- Screen GUI
--- =========================================
-
 function Renderer:BeginScreenGUI()
     love.graphics.push()
 end
@@ -341,10 +300,6 @@ function Renderer:EndScreenGUI()
     love.graphics.pop()
 end
 
-
--- =========================================
--- Pixel Perfect Frame
--- =========================================
 
 function Renderer:BeginPixelPerfect()
 
@@ -396,10 +351,6 @@ function Renderer:EndPixelPerfect()
 end
 
 
--- =========================================
--- Render Function
--- =========================================
-
 local function V1(Renderer)
 
     local Objects = Foxit.Objects
@@ -407,7 +358,7 @@ local function V1(Renderer)
     if Renderer.PixelPerfect then
         Renderer:BeginPixelPerfect()
     end
-    
+
     -- // World
 
     Renderer:BeginWorld()
