@@ -13,14 +13,16 @@ function Signal.new()
 end
 
 function Signal:Fire(...)
-    
+    local args = {...}
+
+
     for i, connection in pairs(self.Connections) do
         if connection.Active and connection.Function then
             if connection.Once then
                 connection:Disconnect()
             end
-           task.spawn(function(...)
-                connection.Function(...)
+           task.spawn(function()
+                connection.Function(unpack(args)) -- // fix
            end)
         end
     end

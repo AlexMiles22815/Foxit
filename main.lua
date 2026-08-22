@@ -16,11 +16,20 @@ _G.Foxit = Foxit
 local utils = require('Foxit.Core.Utills'); Foxit.log = utils.BuildLogFuncs('main')
 local Renderer = require('Foxit.Core.Renderer').new()
 local SoundHandler = require('Foxit.Core.Handlers.SoundHandler')
+local Mouse = require('Foxit.Classes.Mouse')
 
 Script = require('Foxit.Classes.Script')
 Signal = require('Foxit.Classes.Signal')
 Vector2 = require('Foxit.Classes.Vector2')
+Camera = require('Foxit.Classes.Camera')
 task = require('Foxit.Core.task')
+
+
+Foxit.Camera = Camera.new()
+Foxit.Mouse = Mouse.new()
+Foxit.Mouse.LoveImage = love.graphics.newImage('Foxit/Assets/Cursor/Idle.png')
+Foxit.Mouse.Scale = Vector2.new(0.05, 0.05)
+love.mouse.setVisible(false)
 
 Foxit.log.info('Setting up Signals..')
 
@@ -31,6 +40,12 @@ Foxit.KeyReleased = Signal.new()
 Foxit.log.info('Setting up Love Callbacks..')
 
 function Foxit.love.update(dt)
+
+    -- // Mouse
+    local mx, my = love.mouse.getPosition()
+    Foxit.Mouse.Position = Vector2.new(mx, my)
+
+    -- // Other
     Renderer:Update(dt)
     SoundHandler:Update(dt)
     task.update(dt)
@@ -47,6 +62,28 @@ end
 
 function Foxit.love.keyreleased(key, scancode)
     Foxit.KeyReleased:Fire(key:upper())
+end
+
+function Foxit.love.mousepressed(x, y, button, istouch, presses)
+    if button == 1 then
+        Foxit.Mouse.LMB:Fire(false)
+    elseif button == 2 then
+        Foxit.Mouse.RMB:Fire(false)
+    elseif button == 3 then
+
+    end
+
+end
+
+function Foxit.love.mousereleased(x, y, button, istouch, presses)
+    if button == 1 then
+        Foxit.Mouse.LMB:Fire(true)
+    elseif button == 2 then
+        Foxit.Mouse.RMB:Fire(true)
+    elseif button == 3 then
+
+    end
+
 end
 
 function Foxit:GetRenderer()

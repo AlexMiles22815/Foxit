@@ -29,7 +29,7 @@ function Renderer:Draw()
 
     -- // Render stuff
 
-    self.RenderFunction()
+    self.RenderFunction(self)
 
     -- //
 
@@ -37,7 +37,8 @@ function Renderer:Draw()
 end
 
 function Renderer:GetWindowSize()
-    return love.window.getDimensions()
+    local w, h, f = love.window.getMode() 
+    return w, h
 end
 
 function Renderer:SetWindowSize(w, h)
@@ -62,9 +63,70 @@ function Renderer:Windowed()
 end
 
 -- // Render Function 
-local function V1()
-    
+local function V1(Renderer)
+    local Objects = Foxit.Objects
+    local Camera = Foxit.Camera
 
+    local sw, sh = Renderer:GetWindowSize()
+
+    -- // Draw Objects
+    love.graphics.push()
+
+    love.graphics.translate(
+        sw / 2 - Camera.Position.X,
+        sh / 2 - Camera.Position.Y
+    )
+
+    for i, Object in pairs(Objects) do
+        if Object.Mouse then goto continue end
+        
+        if Object.LoveImage then
+            love.graphics.draw(
+                Object.LoveImage,
+                Object.Position.X,
+                Object.Position.Y,
+                0,
+                Object.Scale.X,
+                Object.Scale.Y,
+                Object.LoveImage:getWidth() / 2,
+                Object.LoveImage:getHeight() / 2
+            )
+
+
+        end
+        ::continue::
+    end
+
+    love.graphics.pop()
+
+    -- // Draw GUI
+
+    love.graphics.push()
+
+    love.graphics.pop()
+
+    -- // Core GUI (Mouse, itd)
+
+    love.graphics.push()
+
+    local Mouse = Foxit.Mouse
+    if Mouse.LoveImage then
+            love.graphics.draw(
+                Mouse.LoveImage,
+                Mouse.Position.X,
+                Mouse.Position.Y,
+                0,
+                Mouse.Scale.X,
+                Mouse.Scale.Y,
+                Mouse.LoveImage:getWidth() / 2,
+                Mouse.LoveImage:getHeight() / 2
+            )
+
+        end
+
+    love.graphics.pop()
+
+    ::continue::
 end
 
 RenderFunctions.V1 = V1

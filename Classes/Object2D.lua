@@ -12,10 +12,14 @@ function Object2D.new()
     self.Scale = Vector2.new(1, 1)
     self.Rotation = 0
 
-    self.Image = nil
+    self.LoveImage = nil
 
 
     return self
+end
+
+function Object2D:LoadImage(path)
+    self.LoveImage = love.graphics.newImage(path)
 end
 
 return Object2D
