@@ -2,6 +2,7 @@ local Object2D = {}
 Object2D.__index = Object2D
 
 local Object = require('Foxit.Classes.Object')
+local Signal = require('Foxit.Classes.Signal')
 setmetatable(Object2D, Object)
 
 function Object2D.new()
@@ -15,6 +16,7 @@ function Object2D.new()
     self.Transparency = 0
     self.LoveImage = nil
 
+    self.OnMouseClicked = Signal.new()
 
     return self
 end

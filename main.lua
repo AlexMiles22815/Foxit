@@ -6,6 +6,8 @@ local Foxit = {
 
     Sounds = {},
     Objects = {},
+    Gui = {},
+    CoreGui = {},
 
     Version = '0.0.1',
 }
@@ -28,6 +30,8 @@ Vector2 = require('Foxit.Classes.Vector2')
 Color3 = require('Foxit.Classes.Color3')
 Camera = require('Foxit.Classes.Camera')
 Object2D = require('Foxit.Classes.Object2D')
+GuiObject2D = require('Foxit.Classes.GuiObject2D')
+TextLabel = require('Foxit.Classes.TextLabel')
 task = require('Foxit.Core.task')
 
 

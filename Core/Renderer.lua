@@ -409,6 +409,16 @@ local function V1(Renderer)
 
     -- // GUI
 
+    for i, gui in pairs(Foxit.Gui) do
+        if gui.IsGui then
+            
+            
+
+
+        end
+    end
+
+
     Renderer:EndGUI()
 
     if Renderer.PixelPerfect then
