@@ -21,11 +21,8 @@ function Renderer.new()
     self.dt = 0
 
     self.RenderFunction = RenderFunctions.V1
-
-    -- Virtual / logical resolution
     self.VirtualSize = Vector2.new(320, 180)
 
-    -- Pixel-perfect rendering
     self.PixelPerfect = false
     self.Canvas = nil
 
@@ -132,7 +129,6 @@ function Renderer:CreateCanvas()
 
     self.Canvas = love.graphics.newCanvas(w, h)
 
-    -- VERY IMPORTANT for pixel art
     self.Canvas:setFilter(
         'nearest',
         'nearest'
@@ -144,9 +140,24 @@ function Renderer:CreateCanvas()
 end
 
 
--- =========================================
--- Normal Viewport
--- =========================================
+function Renderer:IsFulscreen()
+   local w, h, f = love.window.getMode()
+   return f.fullscreen ~= false, f.fullscreentype
+end
+
+function Renderer:IsWindowed()
+   local w, h, f = love.window.getMode()
+   return f.fullscreen ~= true
+end
+
+function Renderer:ToggleScreenMode()
+    local IsFulscreen, fullscreenType = self:IsFulscreen()
+    if IsFulscreen then
+        self:Windowed()
+    else
+        self:Fullscreen(fullscreenType)
+    end
+end
 
 function Renderer:GetViewport()
     local sw, sh = self:GetWindowSize()

@@ -15,6 +15,9 @@ local Foxit = {
 setmetatable(Foxit.Objects, {__mode = 'k'}) -- Weak 
 setmetatable(Foxit.Sounds, {__mode = 'k'}) -- Weak =)))
 
+setmetatable(Foxit.Gui, {__mode = 'k'}) -- Weak 
+setmetatable(Foxit.CoreGui, {__mode = 'k'})
+
 _G.Foxit = Foxit
 
 local utils = require('Foxit.Core.Utills'); Foxit.log = utils.BuildLogFuncs('main')
@@ -129,6 +132,12 @@ local IntroScript = Script.new('Foxit/Scripts/intro.lua')
 IntroScript.Name = 'intro'
 
 IntroScript:Run()
+
+Foxit.KeyPressed:Connect(function(key)
+    if key == 'F11' then
+        Renderer:ToggleScreenMode()
+    end
+end)
 
 task.spawn(function()
 

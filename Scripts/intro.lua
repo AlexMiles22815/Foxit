@@ -15,7 +15,6 @@ conn = Renderer.PreRender:Connect(function(dt)
 
     if Image.Transparency == 0 then
         conn:Disconnect()
-        
     end
     
 end)
@@ -38,3 +37,8 @@ end)
 
 
 -- // Destroy
+
+repeat Renderer.PreRender:Wait()
+until _G.__introFinished == true
+
+Image:Destroy()
