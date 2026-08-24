@@ -10,6 +10,7 @@ local Foxit = {
     CoreGui = {},
 
     Version = '0.0.1',
+    Config = require('Foxit.config')
 }
 
 setmetatable(Foxit.Objects, {__mode = 'k'}) -- Weak 
@@ -128,10 +129,17 @@ Renderer:SetPixelPerfect(false)
 _G.__introFinished = false
 
 Foxit.log.info('Playing Intro..')
-local IntroScript = Script.new('Foxit/Scripts/intro.lua')
-IntroScript.Name = 'intro'
+if Foxit.Config.skipIntro then
+    Foxit.log.info('Intro skipped')
+    _G.__introFinished = true
+else
+    local IntroScript = Script.new('Foxit/Scripts/intro.lua')
+    IntroScript.Name = 'intro'
 
-IntroScript:Run()
+    IntroScript:Run()
+end
+
+
 
 Foxit.KeyPressed:Connect(function(key)
     if key == 'F11' then

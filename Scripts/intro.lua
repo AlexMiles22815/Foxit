@@ -41,4 +41,6 @@ end)
 repeat Renderer.PreRender:Wait()
 until _G.__introFinished == true
 
+print('Finished')
+
 Image:Destroy()

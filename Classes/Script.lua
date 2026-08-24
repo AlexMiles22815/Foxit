@@ -3,6 +3,7 @@ Script.__index = Script
 
 local ModuleCache = {}
 local unpack = table.unpack or unpack
+local ocular = require('Foxit.Libs.ocular')
 
 
 local sha = require('Foxit.Libs.sha2')
@@ -73,6 +74,21 @@ local function BuildEnv(script)
             return _G[k]
         end
     end
+
+    env.print = function(...)
+        local args = {...}
+
+        for i, arg in pairs(args) do
+            if typeof(arg) == 'table' then
+                args[i] = '\n' .. ocular.look(arg)
+            end
+        end
+
+        args[1] = ('%s [%s]: %s'):format(tick(), script.Name, args[1])
+
+        print(table.concat(args, ' '))
+    end
+
     setmetatable(env, env)
     return env
 end

@@ -1,13 +1,17 @@
 local utils = {}
+local config = require('Foxit.config')
+
 
 function utils.BuildLogFuncs(name)
     local t = {}
 
     function t.info(...)
+        if config.hideEngineLogs then return end
         print(('[%s/INFO]: '):format(name) .. table.concat({...}, ' '))
     end
 
     function t.warn(...)
+        if config.hideEngineLogs then return end
         print(('[%s/WARN]: '):format(name) .. table.concat({...}, ' '))
     end
 

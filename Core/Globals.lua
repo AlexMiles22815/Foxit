@@ -4,7 +4,7 @@ end
 
 function typeof(item)
     local meta = getmetatable(item)
-    local metaType = meta.__type
+    local metaType = meta and meta.__type
 
     if metaType then return metaType else return type(item) end
 end

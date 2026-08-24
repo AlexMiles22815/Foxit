@@ -2,6 +2,11 @@ local task = {}
 local tasks = {}
 local currentTime = 0
 
+local utils = require('Foxit.Core.Utills')
+task.log = utils.BuildLogFuncs('task')
+
+local config = require('Foxit.config')
+
 local function newtask(f)
     local t = {}
     t.co = coroutine.create(f)
@@ -28,7 +33,14 @@ function task.update(dt)
                 
                 if not success then
                     t.active = false
-                    error("Task error: " .. tostring(res))
+
+                    if config.softScriptErrors then
+                        print("Task error: " .. tostring(res))
+                    else
+                        error("Task error: " .. tostring(res))
+                    end
+
+                    
                 elseif type(res) == "number" then
                     t.waitUntil = currentTime + res
                 end
